@@ -41,7 +41,7 @@ class ProductPage extends StatelessWidget {
                   Padding(
                       padding: const EdgeInsets.only(bottom: 15),
                       child: Text(product.decsription.toString())),
-                  _ProductRate(),
+                  _ProductRate(product),
                   Expanded(
                     child: Align(
                       alignment: Alignment.bottomCenter,
@@ -82,15 +82,19 @@ class _ProductImages extends StatelessWidget {
 }
 
 class _ProductRate extends StatelessWidget {
+  final Product product;
+
+  _ProductRate(this.product, {Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Icon(Icons.star_border),
-        Icon(Icons.star_border),
-        Icon(Icons.star_border),
-        Icon(Icons.star_border),
-        Icon(Icons.star_border),
+        _getIconFromRate(product.rate, 1),
+        _getIconFromRate(product.rate, 2),
+        _getIconFromRate(product.rate, 3),
+        _getIconFromRate(product.rate, 4),
+        _getIconFromRate(product.rate, 5),
         Padding(
           padding: const EdgeInsets.only(left: 10),
           child: Text(
@@ -100,6 +104,10 @@ class _ProductRate extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Icon _getIconFromRate(double rate, int position){
+    return Icon(product.rate < position - 0.5 ? (Icons.star_border) : product.rate < position ? Icons.star_half : Icons.star);
   }
 }
 
@@ -137,7 +145,7 @@ class _AddReviewButton extends StatelessWidget {
         color: Colors.grey.shade300,
         textColor: Colors.black,
         onPressed: () => Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text('Add to cart'))),
+            .showSnackBar(SnackBar(content: Text('Add Review'))),
       ),
       height: 50,
     );
