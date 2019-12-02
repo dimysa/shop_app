@@ -29,7 +29,7 @@ class _MyAppBar extends StatelessWidget {
     return SliverAppBar(
       title: Text('Catalog', style: Theme.of(context).textTheme.display4),
       floating: true,
-      actions: [
+      actions: [        
         IconButton(
           icon: Icon(Icons.shopping_cart),
           onPressed: () => Navigator.pushNamed(context, '/cart'),
@@ -65,7 +65,16 @@ class _MyListItem extends StatelessWidget {
               ),
               SizedBox(width: 24),
               Expanded(
-                child: Text(item.name, style: textTheme),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(item.name, style: textTheme),
+                      Text('${item.price.toString()}\$'),
+                    ],
+                  ),
+                ),
               ),
               SizedBox(width: 24),
               _AddButton(item: item),
