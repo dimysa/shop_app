@@ -1,6 +1,5 @@
-import 'dart:math';
-import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'package:myapp/models/product.dart';
 
 class CatalogModel {
   final _products = List<Product>();
@@ -13,21 +12,4 @@ class CatalogModel {
     _products.add(product);
     return product;
   }
-}
-
-@immutable
-class Product {
-  final int id;
-  final String name;
-  final Color color;
-  final int price = Random().nextInt(100);  
-
-  Product(this.id, this.name)
-      : color = Colors.primaries[id % Colors.primaries.length];
-
-  @override  
-  int get hashCode => id;
-
-  @override
-  bool operator ==(Object other) => other is Product && id == other.id;
 }
