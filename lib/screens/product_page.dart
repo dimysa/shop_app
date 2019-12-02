@@ -1,91 +1,145 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/models/cart.dart';
 import 'package:myapp/models/product.dart';
+import 'package:provider/provider.dart';
 
 class ProductPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Product product = ModalRoute.of(context).settings.arguments;
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          _SliverProductAppBar(product),
-          _SliverProductInfo(product),
+      appBar: AppBar(
+        title: Text(
+          product.name,
+          style: Theme.of(context).textTheme.display4,
+        ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Flexible(child: _ProductImages(product)),
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(product.name,
+                            style: const TextStyle(fontSize: 28)),
+                        Text(
+                          '${product.price}\$',
+                          style: const TextStyle(fontSize: 28),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: Text(product.decsription.toString())),
+                  _ProductRate(),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(flex: 10, child: _AddToCartButton(product)),
+                          Spacer(flex: 1),
+                          Expanded(flex: 10, child: _AddReviewButton()),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-class _SliverProductAppBar extends StatelessWidget {
+class _ProductImages extends StatelessWidget {
   final Product product;
 
-  _SliverProductAppBar(this.product, {Key key}) : super(key: key);
+  _ProductImages(this.product, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
-        expandedHeight: 400.0,
-        flexibleSpace: PageView(
-          children: <Widget>[
-            Image.network('https://picsum.photos/400', fit: BoxFit.cover),
-            Image.network('https://picsum.photos/500', fit: BoxFit.cover),
-            Image.network('https://picsum.photos/600', fit: BoxFit.cover),
-          ],
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add_circle),
-            tooltip: 'Add new entry',
-            onPressed: () {/* ... */},
-          ),
-        ]);
+    return PageView(
+      children: <Widget>[
+        Image.network('https://picsum.photos/400', fit: BoxFit.cover),
+        Image.network('https://picsum.photos/500', fit: BoxFit.cover),
+        Image.network('https://picsum.photos/600', fit: BoxFit.cover),
+      ],
+    );
   }
 }
 
-class _SliverProductInfo extends StatelessWidget {
+class _ProductRate extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Icon(Icons.star_border),
+        Icon(Icons.star_border),
+        Icon(Icons.star_border),
+        Icon(Icons.star_border),
+        Icon(Icons.star_border),
+        Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Text(
+            '0 REVIEWS',
+            style: const TextStyle(color: Colors.grey, fontSize: 17),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AddToCartButton extends StatelessWidget {
   final Product product;
 
-  _SliverProductInfo(this.product, {Key key}) : super(key: key);
+  _AddToCartButton(this.product, {Key key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.all(10.0),
-      sliver: SliverList(
-        delegate: SliverChildListDelegate(
-          <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(product.name, style: const TextStyle(fontSize: 32)),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                '${product.price}\$',
-                style: Theme.of(context).textTheme.display4,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.star_border),
-                  Icon(Icons.star_border),
-                  Icon(Icons.star_border),
-                  Icon(Icons.star_border),
-                  Icon(Icons.star_border),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text(
-                      '0 REVIEWS',
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+    final cart = Provider.of<CartModel>(context);
+    final isProductInCart = cart.cartProducts.contains(product);
+    return SizedBox(
+      child: RaisedButton(
+        child: !isProductInCart
+            ? Text('Add to cart', style: const TextStyle(fontSize: 20))
+            : Text('Go to cart', style: const TextStyle(fontSize: 20)),
+        color: Colors.yellow,
+        textColor: Colors.black,
+        onPressed: () => isProductInCart
+            ? Navigator.popAndPushNamed(context, '/cart')
+            : cart.addProduct(product),
       ),
+      height: 50,
+    );
+  }
+}
+
+class _AddReviewButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: RaisedButton(
+        child: Text('Add review', style: const TextStyle(fontSize: 20)),
+        color: Colors.grey.shade300,
+        textColor: Colors.black,
+        onPressed: () => Scaffold.of(context)
+            .showSnackBar(SnackBar(content: Text('Add to cart'))),
+      ),
+      height: 50,
     );
   }
 }

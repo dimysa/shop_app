@@ -6,9 +6,10 @@ class Product {
   final int id;
   final String name;
   final Color color;
-  final int price = Random().nextInt(100);  
+  final int price = Random().nextInt(100);
+  final String decsription;
 
-  Product(this.id, this.name)
+  Product(this.id, this.name, this.decsription)
       : color = Colors.primaries[id % Colors.primaries.length];
 
   @override  

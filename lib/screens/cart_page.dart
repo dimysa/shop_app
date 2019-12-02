@@ -7,16 +7,14 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cart', style: Theme.of(context).textTheme.display4),
-        backgroundColor: Colors.white,
+        title: Text('Cart', style: Theme.of(context).textTheme.display4),        
       ),
-      body: Container(
-        color: Colors.yellow,
+      body: Container(        
         child: Column(
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(32),
+                padding: const EdgeInsets.all(16),
                 child: _CartList(),
               ),
             ),
@@ -37,16 +35,17 @@ class _CartList extends StatelessWidget {
     return Consumer<CartModel>(
       builder: (context, cart, child) => ListView.builder(
         itemCount: cart.cartProducts.length,
-        itemBuilder: (context, index) => ListTile(
-          leading: Icon(Icons.done),
+        itemBuilder: (context, index) => ListTile(          
           title: Text(
             cart.cartProducts[index].name,
             style: itemNameStyle,
           ),
+          subtitle: Text('${cart.cartProducts[index].price.toString()}\$'),
           trailing: IconButton(
             icon: Icon(Icons.delete),
             onPressed: () => cart.removeProduct(cart.cartProducts[index].id),
           ),
+          onTap: () => Navigator.popAndPushNamed(context, '/product', arguments: cart.cartProducts[index]),
         ),
       ),    
     );
@@ -68,12 +67,12 @@ class _CartTotal extends StatelessWidget {
                 builder: (context, cart, child) =>
                     Text('\$${cart.allCost}', style: hugeStyle)),
             SizedBox(width: 24),
-            FlatButton(
+            FlatButton(              
               onPressed: () {
                 Scaffold.of(context).showSnackBar(
                     SnackBar(content: Text('Buying not supported yet.')));
               },
-              color: Colors.white,
+              color: Colors.yellow,
               child: Text('BUY'),
             ),
           ],
