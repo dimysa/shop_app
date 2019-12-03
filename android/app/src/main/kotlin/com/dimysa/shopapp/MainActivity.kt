@@ -1,4 +1,4 @@
-package com.example.myapp
+package com.dimysa.shopapp
 
 import android.os.Bundle
 

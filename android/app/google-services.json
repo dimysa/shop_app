@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "581393607935",
+    "firebase_url": "https://xytki-dev.firebaseio.com",
+    "project_id": "xytki-dev",
+    "storage_bucket": "xytki-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:581393607935:android:b49dc8830c5a1b656330ca",
+        "android_client_info": {
+          "package_name": "com.dimysa.shopapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "581393607935-ii4553qk6c4vt3h0knuu3t7covv8g7pq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6x9rWcZu92knCsXPRm46GTk0jSwZYgyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "581393607935-ii4553qk6c4vt3h0knuu3t7covv8g7pq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
