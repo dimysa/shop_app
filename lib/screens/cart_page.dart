@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/delivery_info_page.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/models/cart.dart';
 
@@ -68,10 +69,7 @@ class _CartTotal extends StatelessWidget {
                     Text('\$${cart.allCost}', style: hugeStyle)),
             SizedBox(width: 24),
             FlatButton(              
-              onPressed: () {
-                Scaffold.of(context).showSnackBar(
-                    SnackBar(content: Text('Buying not supported yet.')));
-              },
+              onPressed: () => Navigator.of(context).pushNamed(DeliveryInfoPage.routeName),
               color: Colors.yellow,
               child: Text('BUY'),
             ),

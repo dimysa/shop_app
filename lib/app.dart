@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:myapp/screens/delivery_info_page.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/screens/cart_page.dart';
 import 'package:myapp/screens/product_page.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => CatalogPage(),
           '/cart': (context) => CartPage(),
           '/product': (context) => ProductPage(),
+          DeliveryInfoPage.routeName: (context) => DeliveryInfoPage(),
         },
       ),
     );
