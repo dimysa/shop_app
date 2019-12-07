@@ -15,11 +15,14 @@ class DeliveryInfoPage extends StatelessWidget {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.fromLTRB(10,10,10,0),
+          padding: const EdgeInsets.all(10),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               _MyTabs(),
+              SizedBox(height: 20),
               Expanded(child: _MyTabView()),
+              _ConfirmPurchaseButton(),
             ],
           ),
         ),
@@ -31,18 +34,19 @@ class DeliveryInfoPage extends StatelessWidget {
 class _MyTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return TabBar(      
+    return TabBar(
+      labelPadding: EdgeInsets.symmetric(horizontal: 5),
       indicator: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.yellow,
       ),
-      indicatorSize: TabBarIndicatorSize.label,      
+      indicatorSize: TabBarIndicatorSize.label,
       tabs: [
         Tab(
           child: DecoratedBox(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.yellow),              
+              border: Border.all(color: Colors.yellow),
             ),
             child: Align(
               alignment: Alignment.center,
@@ -54,7 +58,7 @@ class _MyTabs extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.yellow, width: 1),
+              border: Border.all(color: Colors.yellow),
             ),
             child: Align(
               alignment: Alignment.center,
@@ -67,18 +71,74 @@ class _MyTabs extends StatelessWidget {
   }
 }
 
-class _MyTabView extends StatelessWidget {
+class _MyTabView extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _MyTabViewState();
+}
+
+class _MyTabViewState extends State<_MyTabView> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return TabBarView(
       children: <Widget>[
-        Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+        Form(
+          key: formKey,
+          child: Column(
             children: <Widget>[
-              Icon(Icons.directions_car),
-              Text("Delivery"),
+              SizedBox(height: 5),
+              TextFormField(
+                validator: (value) => value.isEmpty ? 'Enter address' : null,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  labelText: 'Address',
+                ),
+              ),
+              SizedBox(height: 25),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    flex: 12,
+                    child: TextFormField(
+                      validator: (value) => value.isEmpty ? 'Enter name' : null,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(15),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        labelText: 'Name',
+                      ),
+                    ),
+                  ),
+                  Spacer(flex: 1),
+                  Flexible(
+                    flex: 12,
+                    child: TextFormField(
+                      validator: (value) =>
+                          value.isEmpty ? 'Enter phone' : null,
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(15),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        labelText: 'Phone',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 25),
+              TextFormField(
+                maxLines: 3,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  labelText: 'Comment',
+                ),
+              ),
             ],
           ),
         ),
@@ -93,6 +153,22 @@ class _MyTabView extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _ConfirmPurchaseButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: RaisedButton(
+        child: Text('Confirm purchase', style: const TextStyle(fontSize: 20)),
+        color: Colors.yellow,
+        textColor: Colors.black,
+        onPressed: () => Scaffold.of(context)
+            .showSnackBar(SnackBar(content: Text('Purchase confirmed'))),
+      ),
+      height: 50,
     );
   }
 }
