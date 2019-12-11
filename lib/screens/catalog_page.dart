@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/product_page.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/models/cart.dart';
 import 'package:myapp/models/catalog.dart';
 import 'package:myapp/models/product.dart';
 
 class CatalogPage extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldDrawerKey;
+
+  CatalogPage(this.scaffoldDrawerKey);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          _MyAppBar(),
+          SliverAppBar(
+            leading: IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () => scaffoldDrawerKey.currentState.openDrawer(),
+            ),
+            title: Text('Catalog', style: Theme.of(context).textTheme.display4),
+            floating: true,
+          ),
           SliverToBoxAdapter(child: SizedBox(height: 12)),
           SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -19,22 +31,6 @@ class CatalogPage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _MyAppBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
-      title: Text('Catalog', style: Theme.of(context).textTheme.display4),
-      floating: true,
-      actions: [        
-        IconButton(
-          icon: Icon(Icons.shopping_cart),
-          onPressed: () => Navigator.pushNamed(context, '/cart'),
-        ),
-      ],
     );
   }
 }
@@ -82,7 +78,12 @@ class _MyListItem extends StatelessWidget {
           ),
         ),
       ),
-      onTap: () => Navigator.pushNamed(context, '/product', arguments: item),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ProductPage(),
+          settings: RouteSettings(arguments: item),
+        ),
+      ),
     );
   }
 }

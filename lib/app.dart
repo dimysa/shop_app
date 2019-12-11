@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:myapp/models/address_info.dart';
 import 'package:myapp/screens/delivery_info_page.dart';
+import 'package:myapp/screens/home_page.dart';
 import 'package:provider/provider.dart';
-import 'package:myapp/screens/cart_page.dart';
-import 'package:myapp/screens/product_page.dart';
 import 'package:myapp/models/cart.dart';
 import 'package:myapp/models/catalog.dart';
-import 'package:myapp/screens/catalog_page.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -17,7 +16,13 @@ class MyApp extends StatelessWidget {
         Provider(create: (context) => CatalogModel()),
         ChangeNotifierProvider<CartModel>(
           create: (context) => CartModel(),
-        )
+        ),
+        Provider(
+          create: (context) => AddressInfoModel(),
+        ),
+        FutureProvider(
+          create: (context) => AddressInfoModel().addresses,
+        ),
       ],
       child: MaterialApp(
         title: 'Provider Demo',
@@ -34,9 +39,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => CatalogPage(),
-          '/cart': (context) => CartPage(),
-          '/product': (context) => ProductPage(),
+          '/': (context) => HomePage(),
           DeliveryInfoPage.routeName: (context) => DeliveryInfoPage(),
         },
       ),

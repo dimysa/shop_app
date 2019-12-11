@@ -4,13 +4,21 @@ import 'package:provider/provider.dart';
 import 'package:myapp/models/cart.dart';
 
 class CartPage extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldDrawerKey;
+
+  CartPage(this.scaffoldDrawerKey);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cart', style: Theme.of(context).textTheme.display4),        
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () => scaffoldDrawerKey.currentState.openDrawer(),
+        ),
+        title: Text('Cart', style: Theme.of(context).textTheme.display4),
       ),
-      body: Container(        
+      body: Container(
         child: Column(
           children: [
             Expanded(
@@ -36,7 +44,7 @@ class _CartList extends StatelessWidget {
     return Consumer<CartModel>(
       builder: (context, cart, child) => ListView.builder(
         itemCount: cart.cartProducts.length,
-        itemBuilder: (context, index) => ListTile(          
+        itemBuilder: (context, index) => ListTile(
           title: Text(
             cart.cartProducts[index].name,
             style: itemNameStyle,
@@ -46,9 +54,10 @@ class _CartList extends StatelessWidget {
             icon: Icon(Icons.delete),
             onPressed: () => cart.removeProduct(cart.cartProducts[index].id),
           ),
-          onTap: () => Navigator.popAndPushNamed(context, '/product', arguments: cart.cartProducts[index]),
+          onTap: () => Navigator.popAndPushNamed(context, '/product',
+              arguments: cart.cartProducts[index]),
         ),
-      ),    
+      ),
     );
   }
 }
@@ -68,8 +77,9 @@ class _CartTotal extends StatelessWidget {
                 builder: (context, cart, child) =>
                     Text('\$${cart.allCost}', style: hugeStyle)),
             SizedBox(width: 24),
-            FlatButton(              
-              onPressed: () => Navigator.of(context).pushNamed(DeliveryInfoPage.routeName),
+            FlatButton(
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(DeliveryInfoPage.routeName),
               color: Colors.yellow,
               child: Text('BUY'),
             ),
