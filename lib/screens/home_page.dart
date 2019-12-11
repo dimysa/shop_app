@@ -10,6 +10,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final scaffoldDrawerKey = GlobalKey<ScaffoldState>();
+  final bottomTabNavigationBar = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -54,20 +55,26 @@ class _HomePageState extends State<HomePage> {
       body: IndexedStack(
         index: _currentIndex,
         children: <Widget>[
-          Navigator(
-            onGenerateRoute: (settings) {
-              return MaterialPageRoute(
-                settings: settings,
-                builder: (context) {
-                  switch (settings.name) {
-                    case '/':
-                      return CatalogPage(scaffoldDrawerKey);
-                    default: 
-                      return CatalogPage(scaffoldDrawerKey);
-                  }
-                },
-              );
+          WillPopScope(
+            onWillPop: () async {
+              return !await bottomTabNavigationBar.currentState.maybePop();
             },
+            child: Navigator(
+              key: bottomTabNavigationBar,
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  settings: settings,
+                  builder: (context) {
+                    switch (settings.name) {
+                      case '/':
+                        return CatalogPage(scaffoldDrawerKey);
+                      default:
+                        return CatalogPage(scaffoldDrawerKey);
+                    }
+                  },
+                );
+              },
+            ),
           ),
           CartPage(scaffoldDrawerKey),
         ],
