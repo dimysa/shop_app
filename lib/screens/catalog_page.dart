@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/i18n/localization.dart';
 import 'package:myapp/screens/product_page.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/models/cart.dart';
@@ -20,7 +21,7 @@ class CatalogPage extends StatelessWidget {
               icon: Icon(Icons.menu),
               onPressed: () => scaffoldDrawerKey.currentState.openDrawer(),
             ),
-            title: Text('Catalog', style: Theme.of(context).textTheme.display4),
+            title: Text(AppLocalizations.of(context).catalog, style: Theme.of(context).textTheme.display4),
             floating: true,
           ),
           SliverToBoxAdapter(child: SizedBox(height: 12)),

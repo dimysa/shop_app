@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/i18n/localization.dart';
 import 'package:myapp/screens/cart_page.dart';
 import 'package:myapp/screens/catalog_page.dart';
 
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              title: Text('Catalog'),
+              title: Text(AppLocalizations.of(context).catalog),
               onTap: () {
                 setState(() {
                   _currentIndex = 0;
@@ -41,7 +42,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Divider(),
             ListTile(
-              title: Text('Cart'),
+              title: Text(AppLocalizations.of(context).cart),
               onTap: () {
                 Navigator.pop(context);
                 setState(() {
@@ -92,11 +93,11 @@ class _HomePageState extends State<HomePage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.view_list),
-            title: Text('Catalog'),
+            title: Text(AppLocalizations.of(context).catalog),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
-            title: Text('Cart'),
+            title: Text(AppLocalizations.of(context).cart),
           ),
         ],
       ),

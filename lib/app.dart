@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:myapp/i18n/localization.dart';
 import 'package:myapp/models/address_info.dart';
 import 'package:myapp/screens/delivery_info_page.dart';
 import 'package:myapp/screens/home_page.dart';
@@ -25,6 +27,16 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        locale: Locale('en'),
+        localizationsDelegates: [
+          AppLocalizationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          Locale('en'),
+          Locale('ru'),
+        ],
         title: 'Provider Demo',
         theme: ThemeData(
           primarySwatch: Colors.yellow,

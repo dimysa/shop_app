@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/i18n/localization.dart';
 import 'package:myapp/screens/delivery_info_page.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/models/cart.dart';
@@ -16,7 +17,7 @@ class CartPage extends StatelessWidget {
           icon: Icon(Icons.menu),
           onPressed: () => scaffoldDrawerKey.currentState.openDrawer(),
         ),
-        title: Text('Cart', style: Theme.of(context).textTheme.display4),
+        title: Text(AppLocalizations.of(context).cart, style: Theme.of(context).textTheme.display4),
       ),
       body: Container(
         child: Column(
