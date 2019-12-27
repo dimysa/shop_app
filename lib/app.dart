@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:myapp/i18n/localization.dart';
 import 'package:myapp/models/address_info.dart';
+import 'package:myapp/models/pickup_info.dart';
 import 'package:myapp/screens/delivery_info_page.dart';
 import 'package:myapp/screens/home_page.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider(create: (context) => CatalogModel()),
-        ChangeNotifierProvider<CartModel>(
+        ChangeNotifierProvider(
           create: (context) => CartModel(),
         ),
         Provider(
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         FutureProvider(
           create: (context) => AddressInfoModel().addresses,
         ),
+        ChangeNotifierProvider(
+          create: (context) => PickupInfoModel(),
+        )
       ],
       child: MaterialApp(
         locale: Locale('en'),

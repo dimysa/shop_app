@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:myapp/models/address_info.dart';
+import 'package:myapp/models/pickup_info.dart';
 import 'package:myapp/repository/database.dart';
 import 'package:provider/provider.dart';
 
@@ -257,65 +259,55 @@ class _PickupInfoView extends StatelessWidget {
           'Select address',
           style: const TextStyle(fontSize: 20),
         ),
-        ListView.builder(
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return ChoiceChip(
-              onSelected: (isSelect) => {},
-              selected: false,
-              label: Text('Address$index'),
+        Consumer<PickupInfoModel>(
+          builder: (context, model, child) {
+            var addresses = model.getPickupAdresses().toList();
+            return ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Row(children: <Widget>[
+                  Radio(
+                    value: addresses[index],
+                    groupValue: model.address == addresses[index] ? addresses[index] : '',
+                    onChanged: (value) => model.address = value,
+                  ),
+                  Text(addresses[index]),
+                ]);
+              },
+              itemCount: addresses.length,
             );
           },
-          itemCount: 3,
         ),
         Text(
           'Select date',
           style: const TextStyle(fontSize: 20),
         ),
-        Row(
-          children: <Widget>[
-            ChoiceChip(
-              onSelected: (isSelect) => {},
-              selected: false,
-              label: Text('Today'),
-            ),
-            ChoiceChip(
-              onSelected: (isSelect) => {},
-              selected: false,
-              label: Text('Tommorow'),
-            ),
-            ChoiceChip(
-              onSelected: (isSelect) {
-                final now = DateTime.now();
-                showDatePicker(
-                  context: context,
-                  initialDate: now,
-                  firstDate: now,
-                  lastDate: DateTime.now().add(Duration(days: 14)),
-                );
-              },
-              selected: false,
-              label: Text('Select date'),
-            ),
-          ],
-        )
+        Consumer<PickupInfoModel>(builder: (context, model, child) {
+          return Row(
+            children: <Widget>[
+              Text(DateFormat('yyyy-MM-dd').format(model.deliveryDateTime)),
+              ChoiceChip(
+                onSelected: (isSelect) => {model.setTommorowDeliveryDateTime()},
+                selected: false,
+                label: Text('Tommorow'),
+              ),
+              ChoiceChip(
+                onSelected: (isSelect) async {
+                  final now = DateTime.now();
+                  model.deliveryDateTime = await showDatePicker(
+                    context: context,
+                    initialDate: now,
+                    firstDate: now,
+                    lastDate: DateTime.now().add(Duration(days: 14)),
+                  );
+                },
+                selected: false,
+                label: Text('Select date'),
+              ),
+            ],
+          );
+        }),
       ],
-    );
-  }
-}
-
-class _ConfirmPurchaseButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      child: RaisedButton(
-        child: Text('Confirm purchase', style: const TextStyle(fontSize: 20)),
-        color: Colors.yellow,
-        textColor: Colors.black,
-        onPressed: () => Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text('Purchase confirmed'))),
-      ),
-      height: 50,
     );
   }
 }
