@@ -17,7 +17,8 @@ class CartPage extends StatelessWidget {
           icon: Icon(Icons.menu),
           onPressed: () => scaffoldDrawerKey.currentState.openDrawer(),
         ),
-        title: Text(AppLocalizations.of(context).cart, style: Theme.of(context).textTheme.display4),
+        title: Text(AppLocalizations.of(context).cart,
+            style: Theme.of(context).textTheme.display4),
       ),
       body: Container(
         child: Column(
@@ -79,8 +80,26 @@ class _CartTotal extends StatelessWidget {
                     Text('\$${cart.allCost}', style: hugeStyle)),
             SizedBox(width: 24),
             FlatButton(
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(DeliveryInfoPage.routeName),
+              onPressed: () => Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secAnimation) =>
+                      DeliveryInfoPage(),
+                  transitionsBuilder:
+                      (context, animation, secAnimation, child) {
+                    var begin = Offset(0.0, 1.0);
+                    var end = Offset.zero;
+                    var curve = Curves.ease;
+
+                    var tween = Tween(begin: begin, end: end)
+                        .chain(CurveTween(curve: curve));
+
+                    return SlideTransition(
+                      position: animation.drive(tween),
+                      child: child,
+                    );
+                  },
+                ),
+              ),
               color: Colors.yellow,
               child: Text('BUY'),
             ),
